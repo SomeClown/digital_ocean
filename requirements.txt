@@ -1,0 +1,7 @@
+appdirs==1.4.3
+click==6.7
+packaging==16.8
+pyparsing==2.2.0
+python-digitalocean==1.11
+requests==2.14.2
+six==1.10.0
