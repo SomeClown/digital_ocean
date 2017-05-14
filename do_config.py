@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!venv/bin/python3
 
 import digitalocean
 import click
