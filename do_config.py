@@ -1,4 +1,4 @@
-#! /Users/someclown/dev/DO/venv/bin/python3
+#!/usr/bin/env
 
 import digitalocean
 import click
