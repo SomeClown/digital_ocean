@@ -32,7 +32,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-api_token = '152f7b796dfb2eb9709adc19d1674e1846fdb2017b1dc95707c6db19ec8058a2'
+api_token = ''
 api_url_base = 'https://api.digitalocean.com/v2/'
 headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer {0}'.format(api_token)}
 
@@ -49,6 +49,9 @@ color_purple2 = "\033[1;35m"
 color_cyan2 = "\033[1;36m"
 color_white2 = "\033[1;37m"
 color_off = "\33[00m"
+
+with open('uid.txt', 'r') as f:
+    api_token = (f.readline().rstrip())
 
 
 @click.group()
