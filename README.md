@@ -6,4 +6,4 @@ and put your Digital Ocean API key on the first line, with no comments or extra
 text.
 
 ### To Do
-* Finish implementing all of python-digitalocean library, upon which this is based
+Create more stuff that does stuff, and things that do things, and other stuff.
