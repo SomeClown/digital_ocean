@@ -3,7 +3,6 @@
 import requests
 import json
 import click
-from collections import abc
 
 __author__ = "SomeClown"
 __license__ = "MIT"
@@ -129,7 +128,65 @@ def return_images():
                 # print(color_red2_on + '{0}'.format(k) + color_red2_off + ': {0}'.format(v))
     print_dict(get_images)
 
+
+@click.command(options_metavar='[options]', short_help='Return droplets information')
+@click.option('-i', '--id', 'droplet_id', default=0, help='ID of droplet on which to request information')
+def return_droplets(droplet_id):
+    """
+    :param: droplet_id
+    :return: 
+    """
+    if droplet_id:
+        print(color_red2_on + '\nNot yet implemented\n' + color_off)
+        return
+    else:
+        click.echo()
+        get_droplets = get_stuff(suffix='droplets')
+
+    def print_dict(d):
+        """
+
+        :param d: 
+        :return: 
+        """
+        for k, v in d.items():
+            if isinstance(v, dict):
+                # print(color_red2_on + '{0}: '.format(k))
+                print_dict(v)
+            elif isinstance(v, list):
+                for item in v:
+                    print(color_red2_on + 'Name: ' + color_red2_off + item['name'])
+                    print(color_red2_on + 'ID: ' + color_red2_off + str(item['id']))
+                    print(color_red2_on + 'Memory: ' + color_red2_off + str(item['size']['slug']))
+                    print(color_red2_on + 'vCPUs: ' + color_red2_off + str(item['vcpus']))
+                    print(color_red2_on + 'Disk: ' + color_red2_off + str(item['disk']))
+                    print(color_red2_on + 'Status: ' + color_red2_off + str(item['status']))
+                    print(color_red2_on + 'Created: ' + color_red2_off + str(item['created_at']))
+                    print(color_red2_on + 'Image Information: ' + color_red2_off)
+                    print(color_blue2 + '\tID: ' + color_off + str(item['image']['id']))
+                    print(color_blue2 + '\tName: ' + color_off + str(item['image']['name']))
+                    print(color_blue2 + '\tDistribution: ' + color_off + str(item['image']['distribution']))
+                    print(color_red2_on + 'Monthly Price: ' + color_red2_off + '$' +
+                          str(item['size']['price_monthly']))
+                    print(color_red2_on + 'Networking Information: ' + color_red2_off)
+                    for thing, other_thing in item['networks'].items():
+                        for address_stuff in other_thing:
+                            print(color_blue2 + '\tip address: ' + color_off + address_stuff['ip_address'])
+                            print(color_blue2 + '\tip net mask: ' + color_off + address_stuff['netmask'])
+                            print(color_blue2 + '\tip gateway: ' + color_off + address_stuff['gateway'])
+                            print(color_blue2 + '\tip type: ' + color_off + address_stuff['type'])
+                            print('\t-----------------------')
+                    print(color_red2_on + 'Region Name: ' + color_off + item['region']['name'] +
+                          ' (' + color_yellow2 + item['region']['slug'] + color_off + ')')
+                    print(color_red2_on + 'Tags: ' + color_red2_off + str(item['tags']))
+            else:
+                click.echo()
+                # print(color_red2_on + '{0}'.format(k) + color_red2_off + ': {0}'.format(v))
+
+    print_dict(get_droplets)
+
 cli_init.add_command(return_account_info, 'account')
 cli_init.add_command(return_images, 'images')
+cli_init.add_command(return_droplets, 'droplets')
 
 cli_init()
