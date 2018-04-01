@@ -35,7 +35,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 with open('uid.txt', 'r') as f:
     api_token = (f.readline().rstrip())
 api_url_base = 'https://api.digitalocean.com/v2/'
-headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer {0}'.format(api_token)}
+headers = {'Content-Type': 'application/json',
+           'User-Agent': 'Umbrella Corporation',
+           'Authorization': 'Bearer {0}'.format(api_token)}
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 EPILOG = 'Digital Ocean Droplets Utility'
@@ -211,9 +213,28 @@ def return_ssh_keys():
         print(e)
         click.echo()
 
+
+@click.command(options_metavar='[options]', short_help='Return Domain Name Records')
+def return_dns_records():
+    """
+    
+    :return: 
+    """
+    get_dns = get_stuff(suffix='domains')
+    if not isinstance(get_dns, dict):
+        raise TypeError('returned object type is incorrect')
+    try:
+        click.echo()
+        print(color_red2_on + 'Domain Records: ' + color_off)
+        print(get_dns)
+    except BaseException as e:
+        print(e)
+        click.echo()
+
 cli_init.add_command(return_account_info, 'account')
 cli_init.add_command(return_images, 'images')
 cli_init.add_command(return_droplets, 'droplets')
 cli_init.add_command(return_ssh_keys, 'keys')
+cli_init.add_command(return_dns_records, 'dns')
 
 cli_init()
