@@ -109,7 +109,7 @@ def return_images():
     get_images = get_stuff(suffix='images')
     click.echo()
 
-    def print_dict(d):
+    def print_dict(d: dict):
         """
         
         :param d: 
@@ -131,7 +131,7 @@ def return_images():
 
 @click.command(options_metavar='[options]', short_help='Return droplets information')
 @click.option('-i', '--id', 'droplet_id', default=0, help='ID of droplet on which to request information')
-def return_droplets(droplet_id):
+def return_droplets(droplet_id: int):
     """
     :param: droplet_id
     :return: 
@@ -143,7 +143,7 @@ def return_droplets(droplet_id):
         click.echo()
         get_droplets = get_stuff(suffix='droplets')
 
-    def print_dict(d):
+    def print_dict(d: dict):
         """
 
         :param d: 
@@ -185,8 +185,25 @@ def return_droplets(droplet_id):
 
     print_dict(get_droplets)
 
+
+@click.command(options_metavar='[options]', short_help='Return SSH keys associated with account')
+def return_ssh_keys():
+    """
+    Returns ssh keys information
+    """
+    get_account = get_stuff(suffix='account/keys')
+    click.echo()
+    print(color_red2_on + 'SSH Key Information:' + color_off)
+    for item in get_account['ssh_keys']:
+        print(color_blue2 + '\tID: ' + color_off + str(item['id']))
+        print(color_blue2 + '\tName: ' + color_off + str(item['name']))
+        print(color_blue2 + '\tFingerprint: ' + color_off + str(item['fingerprint']))
+        print(color_blue2 + '\tPublic Key: ' + color_yellow2 + '{0}'.format(str(item['public_key'])))
+    click.echo()
+
 cli_init.add_command(return_account_info, 'account')
 cli_init.add_command(return_images, 'images')
 cli_init.add_command(return_droplets, 'droplets')
+cli_init.add_command(return_ssh_keys, 'keys')
 
 cli_init()
