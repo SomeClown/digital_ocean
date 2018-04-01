@@ -98,7 +98,7 @@ def return_account_info():
     get_account = get_stuff(suffix='account')
     click.echo()
     for k, v in get_account['account'].items():
-        print(color_red2_on + '{0}'.format(k) + color_red2_off + ': {0}'.format(v))
+        print(color_red2_on + '{:45}'.format(k) + color_red2_off + ':' + '{0}'.format(v))
     click.echo()
 
 
