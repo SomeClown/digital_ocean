@@ -231,6 +231,7 @@ def return_dns_records():
         print(e)
         click.echo()
 
+
 cli_init.add_command(return_account_info, 'account')
 cli_init.add_command(return_images, 'images')
 cli_init.add_command(return_droplets, 'droplets')
