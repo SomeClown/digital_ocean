@@ -4,8 +4,17 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
+    """
+    main window
+    """
     def setupUi(self, MainWindow):
+        """
+        more main window
+        :param MainWindow: 
+        :return: 
+        """
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -38,6 +47,11 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        """
+        stuff goes here
+        :param MainWindow: 
+        :return: 
+        """
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Digital Ocean Utility"))
         self.accountInfoPushButton.setText(_translate("MainWindow", "Account Info"))
@@ -45,6 +59,10 @@ class Ui_MainWindow(object):
         self.ImagesPushButton.setText(_translate("MainWindow", "Images"))
         self.dnsPushButton.setText(_translate("MainWindow", "DNS"))
 
+        self.accountInfoPushButton.clicked.connect(self.teren)
+
+    def teren(self):
+        self.textBrowser.setPlainText('test')
 
 if __name__ == "__main__":
     import sys
