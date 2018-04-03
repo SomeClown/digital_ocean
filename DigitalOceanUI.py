@@ -3,6 +3,8 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import requests
+import json
 
 
 class Ui_MainWindow(object):
@@ -61,8 +63,69 @@ class Ui_MainWindow(object):
 
         self.accountInfoPushButton.clicked.connect(self.teren)
 
+    color_black2 = "\033[1;30m"
+    color_red2_on = "\033[01;31m"
+    color_red2_off = "\33[00m"
+    color_green2 = "\033[1;32m"
+    color_yellow2 = "\033[1;33m"
+    color_blue2 = "\033[1;34m"
+    color_purple2 = "\033[1;35m"
+    color_cyan2 = "\033[1;36m"
+    color_white2 = "\033[1;37m"
+    color_off = "\33[00m"
+
+    with open('uid.txt', 'r') as f:
+        api_token = (f.readline().rstrip())
+    api_url_base = 'https://api.digitalocean.com/v2/'
+    headers = {'Content-Type': 'application/json',
+               'User-Agent': 'Umbrella Corporation',
+               'Authorization': 'Bearer {0}'.format(api_token)}
+
     def teren(self):
-        self.textBrowser.setPlainText('test')
+        #self.textBrowser.setPlainText('test')
+        self.return_account_info()
+
+    def get_stuff(self, suffix: str):
+        """
+        return a python response object to calling object
+        :param: suffix
+        :return: json object
+        """
+        api_url = (self.api_url_base + suffix)
+        response = requests.get(api_url, headers=self.headers)
+        if response.status_code == 200:
+            return json.loads(response.content.decode('utf-8'))
+        elif response.status_code >= 500:
+            self.textBrowser.setPlainText('[!] [{0}] Server Error'.format(response.status_code))
+            return None
+        elif response.status_code == 404:
+            self.textBrowser.setPlainText('[!] [{0}] URL not found: [{1}]'.format(response.status_code, api_url))
+            return None
+        elif response.status_code == 401:
+            self.textBrowser.setPlainText('[!] [{0}] Authentication Failed'.format(response.status_code))
+            return None
+        elif response.status_code == 400:
+            self.textBrowser.setPlainText('[!] [{0}] Bad Request'.format(response.status_code))
+            return None
+        elif response.status_code >= 300:
+            self.textBrowser.setPlainText('[!] [{0}] Unexpected Redirect'.format(response.status_code))
+            return None
+        else:
+            self.textBrowser.setPlainText('[?] Unexpected Error: [HTTP {0}]: '
+                                  'Content: {1}'.format(response.status_code, response.content))
+            return None
+
+    def return_account_info(self):
+        """
+        Returns account information
+        """
+        get_account = self.get_stuff(suffix='account')
+        if not isinstance(get_account, dict):
+            raise TypeError('returned object type is incorrect')
+        self.textBrowser.setPlainText(' ')
+        for k, v in get_account['account'].items():
+            self.textBrowser.append(str(k) + ': ' + str(v))
+
 
 if __name__ == "__main__":
     import sys
