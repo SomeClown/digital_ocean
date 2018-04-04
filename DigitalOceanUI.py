@@ -3,7 +3,6 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QColor, QFont
 import requests
 import json
 
@@ -42,14 +41,33 @@ class Ui_MainWindow(object):
     """
 
     css = '''
-    .red{
+    .red_normal{
+        color: red;
+    }
+    .red_italic{
         color: red; 
-        font-family:Times; 
         font-style: italic;
     }
-    .blue{
+    .red_left_pad{
+        color: red;
+        padding-left:5em;
+    }
+    .black_normal{
+        color: black;
+    }
+    .black_italic{
+        color: black;
+        font-style: italic;
+    }
+    .blue_normal{
+        color: blue;
+    }
+    .blue_left_pad{
+        color: blue;
+        padding-left:5em;
+    }
+    .blue_italic{
         color: blue; 
-        font-family:Times; 
         font-style: italic;
     }
     '''
@@ -106,6 +124,7 @@ class Ui_MainWindow(object):
 
         self.accountInfoPushButton.clicked.connect(self.account_info)
         self.dnsPushButton.clicked.connect(self.dns_info)
+        self.dropletsPushButton.clicked.connect(self.droplets_info)
 
     color_black2 = "\033[1;30m"
     color_red2_on = "\033[01;31m"
@@ -126,10 +145,25 @@ class Ui_MainWindow(object):
                'Authorization': 'Bearer {0}'.format(api_token)}
 
     def account_info(self):
-        self.return_account_info()
+        """
+        
+        :return: 
+        """
+        self.return_account_info(self)
 
     def dns_info(self):
-        self.return_dns_records()
+        """
+        
+        :return: 
+        """
+        self.return_dns_records(self)
+
+    def droplets_info(self):
+        """
+        
+        :return: 
+        """
+        self.return_droplets_info(self, droplet_id=0)
 
     def get_stuff(self, suffix: str):
         """
@@ -161,6 +195,7 @@ class Ui_MainWindow(object):
                                           'Content: {1}'.format(response.status_code, response.content))
             return None
 
+    @staticmethod
     def return_account_info(self):
         """
         Returns account information
@@ -169,23 +204,163 @@ class Ui_MainWindow(object):
         if not isinstance(get_account, dict):
             raise TypeError('returned object type is incorrect')
         self.textBrowser.setPlainText(' ')
-        for k, v in get_account['account'].items():
-            self.textBrowser.append(str(k) + ': ' + str(v))
-
-    def return_dns_records(self):
-        get_dns = self.get_stuff(suffix='domains')
         cursor = self.textBrowser.textCursor()
         doc = self.textBrowser.document()
         doc.setDefaultStyleSheet(self.css)
+        for k, v in get_account['account'].items():
+            cursor.insertHtml('''<p><span class='red_normal'>{}</span>'''.format(k))
+            cursor.insertHtml(''': ''')
+            cursor.insertHtml('''<span class='blue'>{}</span></p>'''.format(v))
+            cursor.insertHtml("<br>")
+
+    @staticmethod
+    def return_droplets_info(self, droplet_id: int):
+        """
+        
+        :param self: 
+        :param droplet_id: 
+        :return: 
+        """
+        cursor = self.textBrowser.textCursor()
+        doc = self.textBrowser.document()
+        doc.setDefaultStyleSheet(self.css)
+        if droplet_id:
+            cursor.insertHtml('''<p><span class='red_normal'>{}</span>'''.format('Not yet implemented'))
+            return
+        else:
+            get_droplets = self.get_stuff(suffix='droplets')
+            if not isinstance(get_droplets, dict):
+                raise TypeError('returned object is incorrect')
+
+        def print_dict(d: dict):
+            """
+
+            :param d: 
+            :return: 
+            """
+            for k, v in d.items():
+                if isinstance(v, dict):
+                    print_dict(v)
+                elif isinstance(v, list):
+                    for item in v:
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Name: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(item['name']))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('ID: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['id'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Memory: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['size']['slug'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('vCPUs: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['vcpus'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Disk: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['disk'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Status: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['status'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Created: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['created_at'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span><br /></p>'''.format('Image Information: '))
+
+                        cursor.insertHtml(
+                            '''<p><span class='blue_left_pad'>{}</span></p>'''.format('ID: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /</p>'''.format(str(item['image']['id'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='blue_normal'>{}</span></p>'''.format('Name: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['image']['name'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='blue_normal'>{}</span></p>'''.format('Distribution: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['image']['distribution'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Monthly Price: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format('$' + str(item['size']['price_monthly'])))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span><br /></p>'''.format('Networking Information: '))
+
+                        for thing, other_thing in item['networks'].items():
+                            for address_stuff in other_thing:
+                                cursor.insertHtml(
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip address: '))
+                                cursor.insertHtml(
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['ip_address']))
+
+                                cursor.insertHtml(
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip net mask: '))
+                                cursor.insertHtml(
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['netmask']))
+
+                                cursor.insertHtml(
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip gateway: '))
+                                cursor.insertHtml(
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['gateway']))
+
+                                cursor.insertHtml(
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip type: '))
+                                cursor.insertHtml(
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['type']))
+
+                                cursor.insertHtml(
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format('-----------------------'))
+
+                            cursor.insertHtml(
+                                '''<p><span class='red_normal'>{}</span></p>'''.format('Region Name: '))
+                            cursor.insertHtml(
+                                '''<p><span class='black_normal'>{}</span></p>'''.format(item['region']['name']))
+                            cursor.insertHtml(
+                                '''<p><span class='black_normal'> {}</span></p>'''.format('('))
+                            cursor.insertHtml(
+                                '''<p><span class='red_normal'>{}</span></p>'''.format(item['region']['slug']))
+                            cursor.insertHtml(
+                                '''<p><span class='black_normal'>{}</span><br /></p>'''.format(')'))
+
+                        cursor.insertHtml(
+                            '''<p><span class='red_normal'>{}</span></p>'''.format('Tags: '))
+                        cursor.insertHtml(
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['tags'])))
+                else:
+                    pass
+
+        print_dict(get_droplets)
+
+    @staticmethod
+    def return_dns_records(self):
+        """
+        
+        :return: 
+        """
+        get_dns = self.get_stuff(suffix='domains')
         if not isinstance(get_dns, dict):
             raise TypeError('returned object type is incorrect')
         try:
             self.textBrowser.setPlainText(' ')
             self.textBrowser.append(str(get_dns))
-            cursor.insertHtml('''<p><span class='left'>{}</span>'''.format(k))
-            cursor.insertHtml(''':''')
-            cursor.insertHtml('''<span class='right'>{}</span></p>'''.format(v))
-            cursor.insertHtml("<br>")
         except BaseException as e:
             self.textBrowser.append(str(e))
 
