@@ -64,7 +64,7 @@ class Ui_MainWindow(object):
     }
     .blue_left_pad{
         color: blue;
-        padding-left:5em;
+        text-indent: 10px;
     }
     .blue_italic{
         color: blue; 
@@ -97,6 +97,7 @@ class Ui_MainWindow(object):
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(170, 20, 611, 521))
         self.textBrowser.setObjectName("textBrowser")
+        #self.textBrowser.setStyleSheet("background-color: black;")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
@@ -282,7 +283,7 @@ class Ui_MainWindow(object):
                             '''<p><span class='red_normal'>{}</span><br /></p>'''.format('Image Information: '))
 
                         cursor.insertHtml(
-                            '''<p><span class='blue_left_pad'>{}</span></p>'''.format('ID: '))
+                            '''<p><<span class='blue_left_pad'>{}</span></p>'''.format('ID: '))
                         cursor.insertHtml(
                             '''<p><span class='black_normal'>{}</span><br /</p>'''.format(
                                 str(item['image']['id'])))
