@@ -283,19 +283,19 @@ class Ui_MainWindow(object):
                             '''<p><span class='red_normal'>{}</span><br /></p>'''.format('Image Information: '))
 
                         cursor.insertHtml(
-                            '''<p><<span class='blue_left_pad'>{}</span></p>'''.format('ID: '))
+                            '''<p><<span class='blue_normal'>{}</span></p>'''.format('-----ID: '))
                         cursor.insertHtml(
                             '''<p><span class='black_normal'>{}</span><br /</p>'''.format(
                                 str(item['image']['id'])))
 
                         cursor.insertHtml(
-                            '''<p><span class='blue_normal'>{}</span></p>'''.format('Name: '))
+                            '''<p><span class='blue_normal'>{}</span></p>'''.format('-----Name: '))
                         cursor.insertHtml(
                             '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                 str(item['image']['name'])))
 
                         cursor.insertHtml(
-                            '''<p><span class='blue_normal'>{}</span></p>'''.format('Distribution: '))
+                            '''<p><span class='blue_normal'>{}</span></p>'''.format('-----Distribution: '))
                         cursor.insertHtml(
                             '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                 str(item['image']['distribution'])))
@@ -312,25 +312,25 @@ class Ui_MainWindow(object):
                         for thing, other_thing in item['networks'].items():
                             for address_stuff in other_thing:
                                 cursor.insertHtml(
-                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip address: '))
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('-----ip address: '))
                                 cursor.insertHtml(
                                     '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                         address_stuff['ip_address']))
 
                                 cursor.insertHtml(
-                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip net mask: '))
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('-----ip net mask: '))
                                 cursor.insertHtml(
                                     '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                         address_stuff['netmask']))
 
                                 cursor.insertHtml(
-                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip gateway: '))
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('-----ip gateway: '))
                                 cursor.insertHtml(
                                     '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                         address_stuff['gateway']))
 
                                 cursor.insertHtml(
-                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('ip type: '))
+                                    '''<p><span class='blue_normal'>{}</span></p>'''.format('-----ip type: '))
                                 cursor.insertHtml(
                                     '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
                                         address_stuff['type']))
