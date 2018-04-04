@@ -284,22 +284,26 @@ class Ui_MainWindow(object):
                         cursor.insertHtml(
                             '''<p><span class='blue_left_pad'>{}</span></p>'''.format('ID: '))
                         cursor.insertHtml(
-                            '''<p><span class='black_normal'>{}</span><br /</p>'''.format(str(item['image']['id'])))
+                            '''<p><span class='black_normal'>{}</span><br /</p>'''.format(
+                                str(item['image']['id'])))
 
                         cursor.insertHtml(
                             '''<p><span class='blue_normal'>{}</span></p>'''.format('Name: '))
                         cursor.insertHtml(
-                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['image']['name'])))
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                str(item['image']['name'])))
 
                         cursor.insertHtml(
                             '''<p><span class='blue_normal'>{}</span></p>'''.format('Distribution: '))
                         cursor.insertHtml(
-                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(str(item['image']['distribution'])))
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                str(item['image']['distribution'])))
 
                         cursor.insertHtml(
                             '''<p><span class='red_normal'>{}</span></p>'''.format('Monthly Price: '))
                         cursor.insertHtml(
-                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format('$' + str(item['size']['price_monthly'])))
+                            '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                '$' + str(item['size']['price_monthly'])))
 
                         cursor.insertHtml(
                             '''<p><span class='red_normal'>{}</span><br /></p>'''.format('Networking Information: '))
@@ -309,25 +313,30 @@ class Ui_MainWindow(object):
                                 cursor.insertHtml(
                                     '''<p><span class='blue_normal'>{}</span></p>'''.format('ip address: '))
                                 cursor.insertHtml(
-                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['ip_address']))
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                        address_stuff['ip_address']))
 
                                 cursor.insertHtml(
                                     '''<p><span class='blue_normal'>{}</span></p>'''.format('ip net mask: '))
                                 cursor.insertHtml(
-                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['netmask']))
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                        address_stuff['netmask']))
 
                                 cursor.insertHtml(
                                     '''<p><span class='blue_normal'>{}</span></p>'''.format('ip gateway: '))
                                 cursor.insertHtml(
-                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['gateway']))
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                        address_stuff['gateway']))
 
                                 cursor.insertHtml(
                                     '''<p><span class='blue_normal'>{}</span></p>'''.format('ip type: '))
                                 cursor.insertHtml(
-                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(address_stuff['type']))
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                        address_stuff['type']))
 
                                 cursor.insertHtml(
-                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format('-----------------------'))
+                                    '''<p><span class='black_normal'>{}</span><br /></p>'''.format(
+                                        '-----------------------'))
 
                             cursor.insertHtml(
                                 '''<p><span class='red_normal'>{}</span></p>'''.format('Region Name: '))
