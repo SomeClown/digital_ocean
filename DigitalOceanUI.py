@@ -3,13 +3,14 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor, QFont
 import requests
 import json
 
 __author__ = "SomeClown"
 __license__ = "MIT"
 __maintainer__ = "Teren Bryson"
-__email__ = "teren@packetqueue.net"
+__email__ = "account_info@packetqueue.net"
 
 """
 Copyright 2018 by Teren Bryson
@@ -39,6 +40,20 @@ class Ui_MainWindow(object):
     """
     main window
     """
+
+    css = '''
+    .red{
+        color: red; 
+        font-family:Times; 
+        font-style: italic;
+    }
+    .blue{
+        color: blue; 
+        font-family:Times; 
+        font-style: italic;
+    }
+    '''
+
     def setupUi(self, MainWindow):
         """
         more main window
@@ -89,7 +104,8 @@ class Ui_MainWindow(object):
         self.ImagesPushButton.setText(_translate("MainWindow", "Images"))
         self.dnsPushButton.setText(_translate("MainWindow", "DNS"))
 
-        self.accountInfoPushButton.clicked.connect(self.teren)
+        self.accountInfoPushButton.clicked.connect(self.account_info)
+        self.dnsPushButton.clicked.connect(self.dns_info)
 
     color_black2 = "\033[1;30m"
     color_red2_on = "\033[01;31m"
@@ -109,8 +125,11 @@ class Ui_MainWindow(object):
                'User-Agent': 'Umbrella Corporation',
                'Authorization': 'Bearer {0}'.format(api_token)}
 
-    def teren(self):
+    def account_info(self):
         self.return_account_info()
+
+    def dns_info(self):
+        self.return_dns_records()
 
     def get_stuff(self, suffix: str):
         """
@@ -139,7 +158,7 @@ class Ui_MainWindow(object):
             return None
         else:
             self.textBrowser.setPlainText('[?] Unexpected Error: [HTTP {0}]: '
-                                  'Content: {1}'.format(response.status_code, response.content))
+                                          'Content: {1}'.format(response.status_code, response.content))
             return None
 
     def return_account_info(self):
@@ -152,6 +171,23 @@ class Ui_MainWindow(object):
         self.textBrowser.setPlainText(' ')
         for k, v in get_account['account'].items():
             self.textBrowser.append(str(k) + ': ' + str(v))
+
+    def return_dns_records(self):
+        get_dns = self.get_stuff(suffix='domains')
+        cursor = self.textBrowser.textCursor()
+        doc = self.textBrowser.document()
+        doc.setDefaultStyleSheet(self.css)
+        if not isinstance(get_dns, dict):
+            raise TypeError('returned object type is incorrect')
+        try:
+            self.textBrowser.setPlainText(' ')
+            self.textBrowser.append(str(get_dns))
+            cursor.insertHtml('''<p><span class='left'>{}</span>'''.format(k))
+            cursor.insertHtml(''':''')
+            cursor.insertHtml('''<span class='right'>{}</span></p>'''.format(v))
+            cursor.insertHtml("<br>")
+        except BaseException as e:
+            self.textBrowser.append(str(e))
 
 
 if __name__ == "__main__":

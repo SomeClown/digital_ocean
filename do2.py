@@ -7,7 +7,7 @@ import click
 __author__ = "SomeClown"
 __license__ = "MIT"
 __maintainer__ = "Teren Bryson"
-__email__ = "teren@packetqueue.net"
+__email__ = "account_info@packetqueue.net"
 
 """
 Copyright 2018 by Teren Bryson
