@@ -243,6 +243,7 @@ class Ui_MainWindow(object):
                 if isinstance(v, dict):
                     print_dict(v)
                 elif isinstance(v, list):
+                    self.textBrowser.setPlainText(' ')
                     for item in v:
                         cursor.insertHtml(
                             '''<p><span class='red_normal'>{}</span></p>'''.format('Name: '))
